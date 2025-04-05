@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+//this code is for creating and managing any events that may arrive
+
+struct Event
+{
+    string eventTitle;
+    string eventLocation;
+    int eventYear;
+    int eventMonth;
+    int eventDay;
+    
+    bool inEvening;
+};
+
+int main()
+{
+    vector<Event> events;
+    string inputInput = " ";
+    
+    cout << "Event Creation and Management\n\nWhat would you like to do?\n\n1. Create Event\n\n2.Manage Event" << endl;
+    cin >> userInput;
+
+    switch(userInput)
+    {
+        case 1:
+            //do creating stuff
+        case 2:
+            //do creating stuff
+    }
+}
+
