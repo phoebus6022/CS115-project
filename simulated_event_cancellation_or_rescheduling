@@ -1,0 +1,10 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+//base template file for event rescheduling
+
+int main()
+{
+  return 0;
+}
