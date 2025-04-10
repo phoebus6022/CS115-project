@@ -74,14 +74,46 @@ int main()
             }
             case 2:
             {
+                system("cls");
+                
+                if (events.size() == 0)
+                {
+                    cout << "You have no events! Choose option one to start creating events." << endl << endl;
+
+                    system("pause");
+                }
+                
+                else
+                {
+                    system("cls");
+
+                    for (int i = 0; i < events.size(); i++)
+                    {
+                        cout << endl << "Event Name: " << events[i].title << endl;
+                        cout << endl << "Event Location: " << events[i].location << endl;
+                        cout << endl << "Event Date: " << events[i].month << "/" << events[i].day << "/" << events[i].year << endl;
+                        cout << endl << "Event Time: " << events[i].time << endl << endl;
+
+                        cout << "= = = = = = = = = = = = = = = = = = = = = = = = = =" << endl;
+                    }
+                    
+                    cout << endl;
+                    system("pause");
+
+                }
+                 
                 break;
+                
             }
             default:
             {
                 system("cls");
-                cout << "Invalid Option. Try again." << endl << endl;
+
+                cout << "Invalid Option. Try again.";
+
                 system("pause");
                 system("cls");
+
                 break;
             }
         }  
