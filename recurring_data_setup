@@ -1,10 +1,19 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <stdlib.h>
 using namespace std;
 
-//rn not much here just waiting
+//this code is for creating and managing any events that may arrive
 
-int main()
+struct Event
 {
-  return 0;
-}
+    string title;
+    string location;
+    string year;
+    string month;
+    string day;
+    string time;
+    string amorpm;
+    string repeatType;
+};
