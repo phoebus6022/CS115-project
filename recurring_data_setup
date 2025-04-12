@@ -4,7 +4,7 @@
 #include <stdlib.h>
 using namespace std;
 
-//this code is for creating and managing any events that may arrive
+//this code is for making reoccuring events
 
 struct Event
 {
@@ -15,5 +15,55 @@ struct Event
     string day;
     string time;
     string amorpm;
-    string repeatType;
+    string repeatType; //types: None, Day, Week, Month, Year
 };
+
+int main()
+{
+    vector<Event> events;
+
+    for (int j = 0; j < 5; j++)
+    {
+        Event event;
+        event.title = "Sample Event " + to_string(j);
+        event.location = "Location " + to_string(j);
+        event.year = "1900";
+        event.month = "01";
+        event.day = "0" + to_string(j);
+        event.time = "4:30";
+        event.amorpm = "PM";
+        event.repeatType = "None";
+        events.push_back(event);
+    }
+
+    while (true)
+    {
+        system("cls");
+
+        string numInput = " ";
+
+        cout << "Which event do you want to reoccur?" << endl << endl;
+
+        for (int i = 0; i < events.size(); ++i)
+        {
+            cout << i + 1 << ". " << events.at(i).title << endl;
+        }
+        cout << endl;
+
+        cin >> numInput;
+
+        if (stoi(numInput) > events.size()) //if a choice is entered and it cannot be read
+        {
+            system("cls");
+            cout << "This is not an option. Please try again" << endl << endl;
+            system("pause");
+        }
+
+        else
+        {
+            system("cls");
+            cout << "Recurring Simulation Ended." << endl << endl; //filler for extra code later
+            system("pause");
+        }
+    }
+}
