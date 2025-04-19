@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include <algorithm>
+
 using namespace std;
 
 //this code is for making reoccuring events
@@ -10,13 +12,108 @@ struct Event
 {
     string title;
     string location;
-    string year;
-    string month;
-    string day;
+    int year;
+    int month;
+    int day;
+    int nextYear;
+    int nextMonth;
+    int nextDay;
     string time;
-    string amorpm;
     string repeatType; //types: None, Day, Week, Month, Year
 };
+
+bool isLeapYear(int& year) //checking if the given event year is a leap year
+{
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+int getDaysInMonth(int& year, int& month) //getting the days in a month
+{
+    if (month == 2) // februrary
+    {
+        return isLeapYear(year) ? 29 : 28;
+    }
+
+    else if (month == 4 || month == 6 || month == 9 || month == 11) //april, june, september, november
+    {
+        return 30;
+    }
+
+    else //janurary, march, may, july, august, october, december
+    {
+        return 31;
+    }
+}
+
+void calculateNextEventDate(vector<Event>& events, int& element, int& year, int& month, int& day) //calculating the next date from the recurring info data
+{
+    int daysInMonth = getDaysInMonth(events[element].year, events[element].month);
+    int remainingDays = daysInMonth - events[element].day + 1;
+
+    if (events[element].repeatType == "None")
+    {
+        events[element].nextDay = day;
+        events[element].nextMonth = month;
+        events[element].nextYear = year;
+    }
+
+    else if (events[element].repeatType == "Day")
+    {
+        if (remainingDays > 1)
+        {
+            events[element].nextDay = day + 1;
+        }
+
+        else
+        {
+            events[element].nextDay = 1;
+            events[element].nextMonth = month + 1;
+
+            if (events[element].nextMonth > 12)
+            {
+                events[element].nextMonth = 1;
+                events[element].nextYear = year + 1;
+            }
+        }
+    }
+
+    else if (events[element].repeatType == "Week")
+    {
+        if (remainingDays > 7)
+        {
+            events[element].nextDay = events[element].day + 7;
+        }
+
+        else
+        {
+            events[element].nextDay = 8 - remainingDays;
+            events[element].nextMonth = month + 1;
+
+            if (events[element].nextMonth > 12)
+            {
+                events[element].nextMonth = 1;
+                events[element].nextYear = year + 1;
+            }
+        }
+    }
+
+    else if (events[element].repeatType == "Month")
+    {
+        events[element].nextMonth = events[element].month + 1;
+
+        if (events[element].nextMonth > 12)
+        {
+            events[element].nextMonth = 1;
+            events[element].nextYear = year + 1;
+        }
+    }
+
+    else if (events[element].repeatType == "Year")
+    {
+        events[element].nextYear = year + 1;
+    }
+
+}
 
 int main()
 {
@@ -27,11 +124,13 @@ int main()
         Event event;
         event.title = "Sample Event " + to_string(j);
         event.location = "Location " + to_string(j);
-        event.year = "1900";
-        event.month = "01";
-        event.day = "0" + to_string(j);
-        event.time = "4:30";
-        event.amorpm = "PM";
+        event.year = 1900;
+        event.month = j + 1;
+        event.day = j + 1;
+        event.nextYear = event.year;
+        event.nextMonth =event.month;
+        event.nextDay =event.day;
+        event.time = "14:30";
         event.repeatType = "None";
         events.push_back(event);
     }
@@ -40,7 +139,8 @@ int main()
     {
         system("cls");
 
-        string numInput = " ";
+        int numInput = -1;
+        int eventsElement = -1;
 
         cout << "Which event do you want to reoccur?" << endl << endl;
 
@@ -52,7 +152,7 @@ int main()
 
         cin >> numInput;
 
-        if (stoi(numInput) > events.size()) //if a choice is entered and it cannot be read
+        if (numInput > events.size()) //if a choice is entered and it cannot be read
         {
             system("cls");
             cout << "This is not an option. Please try again" << endl << endl;
@@ -61,9 +161,89 @@ int main()
 
         else
         {
+            eventsElement = numInput - 1; //saving numIput value before changing it for next input selection
+            numInput = -1;
+
             system("cls");
-            cout << "Recurring Simulation Ended." << endl << endl; //filler for extra code later
-            system("pause");
+            cout << "Current Event Time Details:\n\n";
+            cout << "Event Name: " << events[eventsElement].title << endl;
+            cout << "Event Location: " << events[eventsElement].location << endl;
+            cout << "Event Date: " << events[eventsElement].month << "/" << events[eventsElement].day << "/" << events[eventsElement].year << endl;
+            cout << "Event Time: " << events[eventsElement].time << endl;
+            cout << "Time Recurrence Type: " << events[eventsElement].repeatType << endl ;
+            cout << "Next Event Date: " << events[eventsElement].nextMonth << "/" << events[eventsElement].nextDay << "/" << events[eventsElement].nextYear << endl;
+            cout << endl << "= = = = = = = = = = = = = = = = = = = = = = = = = =\n";
+                
+            cout << "Which recurrence type do you want to set up\n\n";
+            cout << "1. None\n2. Day\n3. Week\n4. Month\n5. Year\n\n";
+            cin >> numInput;
+            
+            switch (numInput)
+            {
+                case 1:
+                {
+                    system("cls");
+                    events[eventsElement].repeatType = "None";
+                    calculateNextEventDate(events, eventsElement, events[eventsElement].year, events[eventsElement].month, events[eventsElement].day);
+                    cout << "Your event is now a one-time event.\n\n";
+                    system("pause");
+                    break;
+                }
+                case 2:
+                {
+                    system("cls");
+                    events[eventsElement].repeatType = "Day";
+                    calculateNextEventDate(events, eventsElement, events[eventsElement].year, events[eventsElement].month, events[eventsElement].day);
+                    cout << "Your event now reoccurs daily.\n\n";
+                    cout << "The next time this event will occur is ";
+                    cout << events[eventsElement].nextMonth << "/" << events[eventsElement].nextDay << "/" << events[eventsElement].nextYear << "/\n\n";
+                    system("pause");
+                    break;
+                }
+                case 3:
+                {
+                    system("cls");
+                    events[eventsElement].repeatType = "Week";
+                    calculateNextEventDate(events, eventsElement, events[eventsElement].year, events[eventsElement].month, events[eventsElement].day);
+                    cout << "Your event now reoccurs weekly.\n\n";
+                    cout << "The next time this event will occur is ";
+                    cout << events[eventsElement].nextMonth << "/" << events[eventsElement].nextDay << "/" << events[eventsElement].nextYear << "/\n\n";
+                    system("pause");
+                    break;
+                }
+                case 4:
+                {
+                    system("cls");
+                    events[eventsElement].repeatType = "Month";
+                    calculateNextEventDate(events, eventsElement, events[eventsElement].year, events[eventsElement].month, events[eventsElement].day);
+                    cout << "Your event now reoccurs monthly.\n\n";
+                    cout << "The next time this event will occur is ";
+                    cout << events[eventsElement].nextMonth << "/" << events[eventsElement].nextDay << "/" << events[eventsElement].nextYear << "/\n\n";
+                    system("pause");
+                    break;
+                }
+                case 5:
+
+                {
+                    system("cls");
+                    events[eventsElement].repeatType = "Year";
+                    calculateNextEventDate(events, eventsElement, events[eventsElement].year, events[eventsElement].month, events[eventsElement].day);
+                    cout << "Your event now reoccurs yearly.\n\n";
+                    cout << "The next time this event will occur is ";
+                    cout << events[eventsElement].nextMonth << "/" << events[eventsElement].nextDay << "/" << events[eventsElement].nextYear << "/\n\n";
+                    system("pause");
+                    break;
+                }
+
+                default:
+                {
+                    system("cls");
+                    cout << "You have entered an invalid choice. Returning to main menu.\n\n";
+                    system("pause");
+                    break;
+                }
+            }
+
         }
     }
 }
