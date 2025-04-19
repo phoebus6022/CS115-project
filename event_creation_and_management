@@ -50,10 +50,10 @@ int main()
                 cout << endl << "What year will the event take place (Format: XXXX): "; //Create Year
                 cin >> event.year;
 
-                cout << endl << "Which month (Format: XX)?: "; //Create Month
+                cout << endl << "Which month (1 for Jan, 2 for Feb, etc.)?: "; //Create Month
                 cin >> event.month;
 
-                cout << endl << "On what day (Format: XX)?: "; //Create Day
+                cout << endl << "On what day?: "; //Create Day
                 cin >> event.day;
 
                 cout << endl << "What time (Format: XX:XX on 24Hr Time)?: "; //Create Time
