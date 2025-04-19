@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -10,9 +11,9 @@ struct Event
 {
     string title;
     string location;
-    string year;
-    string month;
-    string day;
+    int year;
+    int month;
+    int day;
     string time;
     string amorpm;
 };
@@ -38,7 +39,7 @@ int main()
 
                 Event event;
 
-                std::cin.ignore();
+                cin.ignore();
 
                 cout << "What will be the name of the event?: "; //Create Title
                 getline(cin, event.title);
@@ -47,13 +48,13 @@ int main()
                 getline(cin, event.location);
 
                 cout << endl << "What year will the event take place (Format: XXXX): "; //Create Year
-                getline(cin, event.year);
+                cin >> event.year;
 
                 cout << endl << "Which month (Format: XX)?: "; //Create Month
-                getline(cin, event.month);
+                cin >> event.month;
 
                 cout << endl << "On what day (Format: XX)?: "; //Create Day
-                getline(cin, event.day);
+                cin >> event.day;
 
                 cout << endl << "What time (Format: XX:XX on 24Hr Time)?: "; //Create Time
                 getline(cin, event.time);
@@ -63,7 +64,7 @@ int main()
                 cout << "Congratulations! Here is the event you have created:" << endl << endl; //Confirmations
                 cout << "Event Name: " << event.title << endl;
                 cout << endl << "Event Location: " << event.location << endl;
-                cout << endl << "Event Date: " << event.month << "/" << event.day << "/" << event.year  << endl;
+                cout << endl << "Event Date: " << event.month << "/" << event.day << "/" << event.year << endl;
                 cout << endl << "Event Time: " << event.time << endl << endl;
 
                 system("pause");
@@ -75,14 +76,14 @@ int main()
             case 2:
             {
                 system("cls");
-                
+
                 if (events.size() == 0)
                 {
                     cout << "You have no events! Choose option one to start creating events." << endl << endl;
 
                     system("pause");
                 }
-                
+
                 else
                 {
                     system("cls");
@@ -96,14 +97,14 @@ int main()
 
                         cout << "= = = = = = = = = = = = = = = = = = = = = = = = = =" << endl;
                     }
-                    
+
                     cout << endl;
                     system("pause");
 
                 }
-                 
+
                 break;
-                
+
             }
             default:
             {
@@ -116,6 +117,6 @@ int main()
 
                 break;
             }
-        }  
+        }
     }
 }
