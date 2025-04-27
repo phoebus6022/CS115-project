@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+//classes will connect to structs and vectors of strings of necessary info; this should connect to the classes once the classes are built
+
+class Event {
+private:
+    std::string name;
+    std::string location;
+    std::string date;
+    std::string time;
+    std::vector<std::string> participants;
+
+public:
+    Event(std::string eventName, std::string eventLocation, std::string eventDate, std::string eventTime, std::vector<std::string> eventParticipants)
+        : name(eventName), location(eventLocation), date(eventDate), time(eventTime), participants(eventParticipants) {}
+
+    std::string getName() const { return name; }
+    std::string getLocation() const { return location; }
+    std::string getDate() const { return date; }
+    std::string getTime() const { return time; }
+    std::vector<std::string> getParticipants() const { return participants; }
+
+    void displayEvent() const {
+        std::cout << "Event: " << name << "\nLocation: " << location << "\nDate: " << date << "\nTime: " << time << "\nParticipants: ";
+        for (const auto& participant : participants) {
+            std::cout << participant << " ";
+        }
+        std::cout << "\n";
+    }
+};
+
+class EventManager {
+private:
+    std::vector<Event> events;
+
+public:
+    void addEvent(const Event& event) {
+        events.push_back(event);
+    }
+
+    void searchEventByName(const std::string& eventName) const {
+        for (const auto& event : events) {
+            if (event.getName() == eventName) {
+                event.displayEvent();
+                return;
+            }
+        }
+        std::cout << "Event not found.\n";
+    }
+};
+
+int main() {
+    EventManager eventManager;
+    
+    eventManager.addEvent(Event("Tech Conference", "New York", "2025-05-10", "09:00 AM", {"Alice", "Bob", "Charlie"}));
+    eventManager.addEvent(Event("Music Festival", "Los Angeles", "2025-06-15", "05:00 PM", {"Dave", "Emma", "Frank"}));
+
+    std::string searchName;
+    std::cout << "Enter event name to search: ";
+    std::cin >> searchName;
+
+    eventManager.searchEventByName(searchName);
+
+    return 0;
+}
