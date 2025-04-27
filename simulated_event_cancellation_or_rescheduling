@@ -1,10 +1,202 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <stdlib.h>
 using namespace std;
 
-//base template file for event rescheduling
+//this code is for creating and managing any events that may arrive
+
+void error()
+{
+    system("cls");
+    cout << "You have no events! Choose option one to start creating events." << endl << endl;
+    system("pause");
+}
+
+struct Event
+{
+    string title;
+    string location;
+    int year;
+    int month;
+    int day;
+    string time;
+    string amorpm;
+};
 
 int main()
 {
-  return 0;
+    vector<Event> events;
+    system("cls");
+
+    int numInput = -1;
+    int vectorPlace = -1;
+    int rYear = -1;
+    int rMonth = -1;
+    int rDay = -1;
+    string rTime = " ";
+
+    for (int j = 0; j < 5; j++)
+    {
+        Event event;
+        event.title = "Sample Event " + to_string(j);
+        event.location = "Location " + to_string(j);
+        event.year = 1900;
+        event.month = j + 1;
+        event.day = j + 1;
+        event.time = "14:30";
+        events.push_back(event);
+    }
+
+    while (true)
+    {
+        int numInput = -1;
+
+        system("cls");
+
+        cout << "Event Cancellation and Rescheduling\n\nWhat would you like to do?\n\n1. Cancel Events\n2. Reschedule Events\n3. View Events" << endl << endl;
+        cin >> numInput;
+
+        switch (numInput)
+        {
+        case 1:
+        {
+
+            if (events.size() == 0)
+            {
+                error();
+            }
+
+            else
+            {
+                system("cls");
+                
+                cout << "Which event would you like to cancel?" << endl << endl;
+
+                for (int i = 0; i < events.size(); ++i)
+                {
+                    cout << i + 1 << ". " << events.at(i).title << endl;
+                }
+                cout << endl;
+                cin >> numInput;
+
+                if (numInput > events.size())
+                {
+                    system("cls");
+                    cout << "Could not find event. Returning to menu." << endl << endl;
+                    system("pause");
+                }
+
+                else
+                {
+                    system("cls");
+                    int vectorPlace = numInput - 1;
+                    cout << events.at(vectorPlace).title << " has been cancelled" << endl << endl;
+                    events.erase(events.begin() + vectorPlace);
+                    system("pause");
+
+                }
+            }
+
+            break;
+        }
+        case 2:
+        {
+            system("cls");
+
+            if (events.size() == 0)
+            {
+                error();
+            }
+
+            else
+            {
+                cout << "Which event would you like to reschedule?" << endl << endl;
+
+                for (int i = 0; i < events.size(); ++i)
+                {
+                    cout << i + 1 << ". " << events.at(i).title << endl;
+                }
+                cout << endl;
+                cin >> numInput;
+
+                if (numInput > events.size())
+                {
+                    system("cls");
+                    cout << "Could not find event. Returning to menu." << endl << endl;
+                    system("pause");
+                }
+
+                else
+                {
+                    int vectorPlace = numInput - 1;
+
+                    system("cls");
+
+                    cout << "What will be the new year of your event (Format: XXXX): ";
+                    cin >> rYear;
+                    cout << "The new month (1 for Jan, 2 for Feb, etc.): ";
+                    cin >> rMonth;
+                    cout << "The new day (1 for Jan, 2 for Feb, etc.): ";
+                    cin >> rDay;
+                    cout << "The new time (Format: XX:XX on 24Hr Time): ";
+                    cin >> rTime;
+
+                    system("cls");
+
+                    cout << "Old date & time: " << events[vectorPlace].month << "/" << events[vectorPlace].day << "/" << events[vectorPlace].year << " " << events[vectorPlace].time << endl << endl;
+                    cout << "New date & time: " << rMonth << "/" << rDay << "/" << rYear << " " << rTime << endl << endl;
+
+                    events[vectorPlace].year = rYear;
+                    events[vectorPlace].month = rMonth;
+                    events[vectorPlace].day = rDay;
+                    events[vectorPlace].time = rTime;
+
+                    system("pause");
+                }
+
+            }
+            break;
+        }
+        case 3:
+        {
+            system("cls");
+
+
+            if (events.size() == 0)
+            {
+                error();
+            }
+
+            else
+            {
+                for (int i = 0; i < events.size(); i++)
+                {
+                    cout << endl << "Event Name: " << events[i].title << endl;
+                    cout << endl << "Event Location: " << events[i].location << endl;
+                    cout << endl << "Event Date: " << events[i].month << "/" << events[i].day << "/" << events[i].year << endl;
+                    cout << endl << "Event Time: " << events[i].time << endl << endl;
+
+                    cout << "= = = = = = = = = = = = = = = = = = = = = = = = = =" << endl;
+                }
+            }
+
+            cout << endl;
+            system("pause");
+
+            break;
+        }
+        default:
+        {
+            system("cls");
+
+            cout << "Invalid Option. Try again.";
+
+            system("pause");
+            system("cls");
+
+            break;
+        }
+        }
+    }
 }
