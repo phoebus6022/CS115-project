@@ -1,0 +1,94 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include <iomanip>
+
+class Event {
+public:
+    Event(std::string name, std::string description, std::time_t eventTime, int notificationTimeAhead)
+        : eventName(name), eventDescription(description), eventTime(eventTime), notificationTimeAhead(notificationTimeAhead) {}
+
+    void notifyParticipant() {
+        std::cout << "Event: " << eventName << "\n";
+        std::cout << "Description: " << eventDescription << "\n";
+        printEventTime();
+    }
+
+    void sendNotification(std::time_t currentTime) {
+        int timeUntilEvent = eventTime - currentTime;
+        if (timeUntilEvent <= notificationTimeAhead && timeUntilEvent > 0) {
+            std::cout << "\nNotification: The event '" << eventName << "' is coming up soon!\n";
+            std::cout << "Description: " << eventDescription << "\n";
+            std::cout << "Time until event: " << timeUntilEvent / 60 << " minutes\n";
+            printEventTime();
+        }
+    }
+
+    std::string getName() { return eventName; }
+    std::time_t getEventTime() { return eventTime; }
+
+private:
+    std::string eventName;
+    std::string eventDescription;
+    std::time_t eventTime;
+    int notificationTimeAhead;  // Notification time ahead in seconds
+
+    void printEventTime() {
+        std::tm *tmEvent = std::localtime(&eventTime);
+        std::cout << "Event time: " << std::put_time(tmEvent, "%c") << "\n";
+    }
+};
+
+class NotificationSystem {
+public:
+    void addEvent(Event e) {
+        events.push_back(e);
+    }
+
+    void checkNotifications() {
+        std::time_t currentTime = std::time(nullptr);
+        for (auto& event : events) {
+            event.sendNotification(currentTime);
+        }
+    }
+
+    void showAllEvents() {
+        for (const auto& event : events) {
+            event.notifyParticipant();
+        }
+    }
+
+private:
+    std::vector<Event> events;
+};
+
+int main() {
+    NotificationSystem system;
+
+    // Example event times (set manually for testing, you can adjust or prompt user for input)
+    std::time_t now = std::time(nullptr);
+    std::time_t event1Time = now + 10 * 60;  // 10 minutes from now
+    std::time_t event2Time = now + 20 * 60;  // 20 minutes from now
+
+    // Create events
+    Event event1("Meeting", "Team meeting to discuss the new project.", event1Time, 5 * 60);  // 5 minutes advance
+    Event event2("Workshop", "Learn advanced C++ features.", event2Time, 5 * 60);         // 5 minutes advance
+
+    // Add events to notification system
+    system.addEvent(event1);
+    system.addEvent(event2);
+
+    // Show all events (for info)
+    system.showAllEvents();
+
+    // Simulate checking notifications every minute
+    while (true) {
+        system.checkNotifications();
+        std::this_thread::sleep_for(std::chrono::minutes(1));  // Wait for a minute before checking again
+    }
+
+    return 0;
+}
