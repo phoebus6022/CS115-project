@@ -1,0 +1,121 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <stdlib.h>
+using namespace std;
+
+//this code is for creating and managing any events that may arrive
+
+struct Event
+{
+    string title;
+    string location;
+    int year;
+    int month;
+    int day;
+    string time;
+    string amorpm;
+};
+
+int main()
+{
+    vector<Event> events;
+
+    while (true)
+    {
+        int numInput = -1;
+
+        system("cls");
+
+        cout << "Event Creation and Management\n\nWhat would you like to do?\n\n1. Create Event\n\n2. Manage Event" << endl << endl;
+        cin >> numInput;
+
+        switch (numInput)
+        {
+            case 1:
+            {
+                system("cls");
+
+                Event event;
+
+                cin.ignore();
+
+                cout << "What will be the name of the event?: "; //Create Title
+                getline(cin, event.title);
+
+                cout << endl << "Where will the event take place?: "; //Create Location
+                getline(cin, event.location);
+
+                cout << endl << "What year will the event take place (Format: XXXX): "; //Create Year
+                cin >> event.year;
+
+                cout << endl << "Which month (1 for Jan, 2 for Feb, etc.)?: "; //Create Month
+                cin >> event.month;
+
+                cout << endl << "On what day?: "; //Create Day
+                cin >> event.day;
+
+                cout << endl << "What time (Format: XX:XX on 24Hr Time)?: "; //Create Time
+                getline(cin, event.time);
+
+                system("cls");
+
+                cout << "Congratulations! Here is the event you have created:" << endl << endl; //Confirmations
+                cout << "Event Name: " << event.title << endl;
+                cout << endl << "Event Location: " << event.location << endl;
+                cout << endl << "Event Date: " << event.month << "/" << event.day << "/" << event.year << endl;
+                cout << endl << "Event Time: " << event.time << endl << endl;
+
+                system("pause");
+
+                events.push_back(event);
+
+                break;
+            }
+            case 2:
+            {
+                system("cls");
+
+                if (events.size() == 0)
+                {
+                    cout << "You have no events! Choose option one to start creating events." << endl << endl;
+
+                    system("pause");
+                }
+
+                else
+                {
+                    system("cls");
+
+                    for (int i = 0; i < events.size(); i++)
+                    {
+                        cout << endl << "Event Name: " << events[i].title << endl;
+                        cout << endl << "Event Location: " << events[i].location << endl;
+                        cout << endl << "Event Date: " << events[i].month << "/" << events[i].day << "/" << events[i].year << endl;
+                        cout << endl << "Event Time: " << events[i].time << endl << endl;
+
+                        cout << "= = = = = = = = = = = = = = = = = = = = = = = = = =" << endl;
+                    }
+
+                    cout << endl;
+                    system("pause");
+
+                }
+
+                break;
+
+            }
+            default:
+            {
+                system("cls");
+
+                cout << "Invalid Option. Try again.";
+
+                system("pause");
+                system("cls");
+
+                break;
+            }
+        }
+    }
+}
